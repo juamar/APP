@@ -62,7 +62,6 @@ public class LoginActivity extends AppCompatActivity {
         public void onClick(View v) {
             /**Intent intent = new Intent(v.getContext(), InicioActivity.class);
             startActivity(intent);**/
-            /**Esto es una edición**/
         }
     }
 
