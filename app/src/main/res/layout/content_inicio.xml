@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,7 +26,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
-                android:background="#eeeeee"
+                android:background="@drawable/border"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin">
 
@@ -49,14 +50,15 @@
                             android:id="@+id/textView" />
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:gravity="center_vertical"
                         >
                         <TextView
-                            android:text="- Si?"
+                            android:text="- Recuerda que tenemos que..."
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/textView3" />
@@ -66,17 +68,35 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_width="0dp"
                     android:layout_weight=".3"
                     android:layout_height="match_parent">
 
-                    <TextView
-                        android:text="TextView de pepe de los palotes con salsa ketchup. A que esta bueno?"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:id="@+id/textView2" />
+                        android:orientation="vertical"
+                        android:gravity="center_vertical"
+                        >
 
+                        <TextView
+                            android:text="3"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:id="@+id/textView2"
+                            android:background="@drawable/rounded_corner"
+                            android:gravity="center_vertical|center_horizontal" />
+
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@mipmap/go"
+                        android:id="@+id/imageButton"
+                        android:layout_weight="0.5"
+                        android:background="@android:color/transparent" />
                 </LinearLayout>
             </LinearLayout>
 
