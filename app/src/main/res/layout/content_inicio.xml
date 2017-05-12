@@ -33,7 +33,7 @@
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="0dp"
-                    android:layout_weight=".7"
+                    android:layout_weight=".6"
                     android:layout_height="match_parent">
 
                     <LinearLayout
@@ -58,7 +58,9 @@
                         android:gravity="center_vertical"
                         >
                         <TextView
-                            android:text="- Recuerda que tenemos que..."
+                            android:text="- Recuerda que tenemos que vernos mañana a las 6"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/textView3" />
@@ -66,6 +68,12 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight=".1"
+                    android:layout_height="match_parent" />
 
                 <LinearLayout
                     android:orientation="horizontal"

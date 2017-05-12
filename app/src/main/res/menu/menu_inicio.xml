@@ -3,8 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="solutions.lhdev.app.app.InicioActivity">
 
-    <item android:id="@+id/registro"
-        android:title="@string/registro"
-        android:orderInCategory="100"
-        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/menu_friends"
+        app:showAsAction="ifRoom|withText"
+        android:icon="@mipmap/friends"
+        android:title="@string/menu_friends"/>
+    <item
+        android:id="@+id/menu_new"
+        app:showAsAction="ifRoom|withText"
+        android:icon="@mipmap/add"
+        android:title="@string/menu_nuevo"/>
 </menu>
