@@ -1,5 +1,6 @@
 package solutions.lhdev.app.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 public class InicioActivity extends AppCompatActivity {
 
     private TextView tVPerfil;
+    private View IBConversationButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,10 @@ public class InicioActivity extends AppCompatActivity {
         SpannableString content = new SpannableString("USER");
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         tVPerfil.setText(content);
+
+        IBConversationButton = findViewById(R.id.IBConversationButton);
+
+        IBConversationButton.setOnClickListener(new ConversationClick());
     }
 
     @Override
@@ -33,6 +39,15 @@ public class InicioActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_inicio, menu);
         return true;
+    }
+
+    private class ConversationClick implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(v.getContext(), ConversationActivity.class);
+            startActivity(intent);
+        }
     }
 
 }

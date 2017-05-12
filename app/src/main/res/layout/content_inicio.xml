@@ -102,7 +102,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         app:srcCompat="@mipmap/go"
-                        android:id="@+id/imageButton"
+                        android:id="@+id/IBConversationButton"
                         android:layout_weight="0.5"
                         android:background="@android:color/transparent" />
                 </LinearLayout>
