@@ -30,7 +30,7 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:layout_marginTop="24dp"
-        android:id="@+id/editTextName"
+        android:id="@+id/editTextUser"
         android:layout_below="@+id/textViewTittleLogin"
         android:layout_centerHorizontal="true"
         android:hint="@string/user"
@@ -43,7 +43,7 @@
         android:ems="10"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/editTextPassword"
+        android:id="@+id/editTextPassword1"
         android:ellipsize="start"
         android:hint="@string/password" />
 
@@ -54,7 +54,7 @@
         android:background="@color/colorPrimary"
         android:id="@+id/buttonRegister"
         android:labelFor="@+id/editTextName"
-        android:layout_below="@+id/editTextPassword"
+        android:layout_below="@+id/editTextPassword1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp" />
 

@@ -2,10 +2,8 @@ package Server;
 
 import android.os.AsyncTask;
 import android.util.Log;
-
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
-
 import Models.User;
 
 /**
@@ -15,30 +13,10 @@ import Models.User;
 public class Server {
 
     private User user;
-    private Server server:
+    private static Server server;
+    private boolean finished = false;
 
-    private class HttpRequestTask extends AsyncTask<Void, Void, User> {
-        @Override
-        protected User doInBackground(Void... params) {
-            try {
-                final String url = "http://rest-service.guides.spring.io/greeting"; //cambiar URL
-                RestTemplate restTemplate = new RestTemplate();
-                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                User user = restTemplate.getForObject(url, User.class);
-                return user;
-            } catch (Exception e) {
-                Log.e("MainActivity", e.getMessage(), e);
-            }
 
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(User user) {
-            setUser(user);
-        }
-
-    }
 
     public User getUser() {
         return user;
@@ -50,7 +28,7 @@ public class Server {
 
     private Server(){}
 
-    public Server getInstance()
+    public static Server getInstance()
     {
         if (server == null)
         {
@@ -58,5 +36,21 @@ public class Server {
         }
 
         return server;
+    }
+
+    public User Login(String email, String Pass)
+    {
+        try {
+            final String url = "http://restapp.tecandweb.net/api/users?email=" + email;
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+            User user = restTemplate.getForObject(url, User.class);
+            this.user = user;
+            return user;
+        } catch (Exception e) {
+            Log.e("MainActivity", e.getMessage(), e);
+        }
+
+        return null;
     }
 }
