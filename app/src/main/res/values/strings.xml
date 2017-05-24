@@ -107,4 +107,7 @@
     <string name="title_activity_conversation">ConversationActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="message">Mensaje</string>
+    <string name="passwordIncorrect">La clave no es correcta</string>
+    <string name="userIncorrect">El usuario no es correcto o no nos hemos podido conectar con internet.</string>
+    <string name="loginProblem">Ha ocurrido un problema con el Login. Lo sentimos.</string>
 </resources>

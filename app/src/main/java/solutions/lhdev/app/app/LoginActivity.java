@@ -1,6 +1,7 @@
 package solutions.lhdev.app.app;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,12 +13,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
-
 import Server.Server;
-import Models.User;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -73,9 +69,6 @@ public class LoginActivity extends AppCompatActivity {
     {
         @Override
         public void onClick(View v) {
-            //Intent intent = new Intent(v.getContext(), InicioActivity.class);
-            //startActivity(intent);
-            //User user = Server.getInstance().Login(eTuser.getText().toString().trim(),eTpass.getText().toString().trim());
             new LoginTask().execute(eTuser.getText().toString().trim(),eTpass.getText().toString().trim());
         }
     }
@@ -88,21 +81,39 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private class LoginTask extends AsyncTask<String, Void, User> {
+    private class LoginTask extends AsyncTask<String, Void, Integer> {
         @Override
-        protected User doInBackground(String... strings) {
+        protected Integer doInBackground(String... strings) {
             try {
                 return Server.getInstance().Login(strings[0],strings[1]);
             } catch (Exception e) {
                 Log.e("MainActivity", e.getMessage(), e);
             }
-
-            return null;
+            return 3;
         }
 
         @Override
-        protected void onPostExecute(User user) {
-            Toast.makeText(LoginActivity.this, user.toString(), Toast.LENGTH_LONG).show();
+        protected void onPostExecute(Integer result) {
+            Resources res = getResources();
+            if (result.equals(0))
+            {
+                Intent intent = new Intent(LoginActivity.this, InicioActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
+            if (result.equals(1))
+            {
+                Toast.makeText(LoginActivity.this, res.getString(R.string.userIncorrect), Toast.LENGTH_SHORT).show();
+            }
+            if (result.equals(2))
+            {
+                Toast.makeText(LoginActivity.this, res.getString(R.string.passwordIncorrect), Toast.LENGTH_SHORT).show();
+            }
+            if (result > 2)
+            {
+                Toast.makeText(LoginActivity.this, res.getString(R.string.loginProblem), Toast.LENGTH_SHORT).show();
+            }
         }
 
     }

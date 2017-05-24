@@ -38,19 +38,28 @@ public class Server {
         return server;
     }
 
-    public User Login(String email, String Pass)
+    public int Login(String email, String pass)
     {
         try {
             final String url = "http://restapp.tecandweb.net/api/users?email=" + email;
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-            User user = restTemplate.getForObject(url, User.class);
-            this.user = user;
-            return user;
+            this.user = restTemplate.getForObject(url, User.class);
         } catch (Exception e) {
             Log.e("MainActivity", e.getMessage(), e);
+            return 1; //user is not correct or we cannot connect to internet.
         }
 
-        return null;
+        if (!this.user.getPassword().equals(pass))
+        {
+            return 2; //password is not correct.
+        }
+
+        return 0;
+    }
+
+    public static void setInstance(Server serverInstance)
+    {
+        server = serverInstance;
     }
 }

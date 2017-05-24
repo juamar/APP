@@ -4,7 +4,7 @@ package Models;
  * Created by JuanIgnacio on 23/05/2017.
  */
 
-public class User {
+public class User{
 
     private int Id;
 
@@ -40,6 +40,11 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    public String getSurname()
+    {
+            return name.split(" ")[0];
     }
 
     public void setId(int id) {

@@ -11,6 +11,7 @@ import android.text.style.UnderlineSpan;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import Server.Server;
 
 public class InicioActivity extends AppCompatActivity {
 
@@ -25,7 +26,7 @@ public class InicioActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         tVPerfil = (TextView) findViewById(R.id.tVPerfil);
-        SpannableString content = new SpannableString("USER");
+        SpannableString content = new SpannableString(Server.getInstance().getUser().getSurname());
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         tVPerfil.setText(content);
 
