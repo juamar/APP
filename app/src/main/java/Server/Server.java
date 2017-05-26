@@ -58,8 +58,10 @@ public class Server {
         return 0;
     }
 
-    public static void setInstance(Server serverInstance)
+    public void getConversations()
     {
-        server = serverInstance;
+        //Trae Conversaciones
+        //Trae el amigo asociado a la conversacion
+        //Contruye vista de conversacion
     }
 }

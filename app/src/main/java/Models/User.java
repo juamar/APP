@@ -77,4 +77,13 @@ public class User{
         return Id + ", " + name + " " + lastName + ", " + email + ", " + phoneNumber;
     }
 
+    public User(int id, String name, String lastName, String email, String phoneNumber) {
+        Id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+    public User() {
+    }
 }
