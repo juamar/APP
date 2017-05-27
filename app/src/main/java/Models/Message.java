@@ -77,6 +77,10 @@ public class Message {
         this.conversation = conversation;
     }
 
+    public boolean getIsReaded() {
+        return isReaded;
+    }
+
     public boolean isReaded() {
         return isReaded;
     }

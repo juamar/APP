@@ -55,8 +55,9 @@ public class Conversation {
         l.setOrientation(LinearLayout.HORIZONTAL);
         l.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 75, context.getResources().getDisplayMetrics())));
         l.setBackgroundResource(R.drawable.border);
-        float horizontalMargin = context.getResources().getDimension(R.dimen.activity_horizontal_margin);
+        float horizontalMargin = 18;
         l.setPadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, horizontalMargin, context.getResources().getDisplayMetrics()),0,(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, horizontalMargin, context.getResources().getDisplayMetrics()),0);
+        l.setWeightSum(1f);
 
         LinearLayout l1 = new LinearLayout(l.getContext());
         l1.setOrientation(LinearLayout.VERTICAL);
@@ -95,7 +96,7 @@ public class Conversation {
         LinearLayout l5 = new LinearLayout(l4.getContext());
         l5.setOrientation(LinearLayout.HORIZONTAL);
         l5.setLayoutParams(new LinearLayout.LayoutParams( (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0, context.getResources().getDisplayMetrics()),LayoutParams.MATCH_PARENT,0.3f));
-        l4.addView(l5);
+        l.addView(l5);
 
         LinearLayout l6 = new LinearLayout(l5.getContext());
         l6.setOrientation(LinearLayout.VERTICAL);
