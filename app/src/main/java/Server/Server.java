@@ -164,4 +164,35 @@ public class Server {
         //Trae el amigo asociado a la conversacion
         //Contruye vista de conversacion
     }
+
+    public ArrayList<View> getMessages(Context context, int conversationId) {
+
+        ArrayList<View> messages = new ArrayList<View>();
+
+        try {
+            final String url = "http://restapp.tecandweb.net/api/Messages?conversationid=" + conversationId;
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+            Message[] messagesArray = restTemplate.getForObject(url, Message[].class);
+
+
+            for (Message message : messagesArray)
+            {
+                if (message.getUserId() == this.getUser().getId())
+                {
+                    messages.add(message.buildMessage(context, true));
+                }
+                else
+                {
+                    messages.add(message.buildMessage(context, false));
+                }
+
+            }
+        } catch (Exception e) {
+            Log.e("MainActivity", e.getMessage(), e);
+            return null;
+        }
+
+        return messages;
+    }
 }

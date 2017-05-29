@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import Listeners.ConversationClick;
 import solutions.lhdev.app.app.R;
 
 /**
@@ -48,6 +49,14 @@ public class Conversation {
 
     }
 
+    /**
+     * This method builds a conversation View for the InicioActivity.
+     * @param friend The Friend we are talking to.
+     * @param lastMessage The Last Message in the conversation.
+     * @param messagesNotReaded Messages Marked as not readed in the conversation.
+     * @param context The context for the View.
+     * @return A View ready to be added to the InicioActivity.
+     */
     public View buildConversation(User friend, Message lastMessage, int messagesNotReaded, Context context)
     {
         LinearLayout l = new LinearLayout(context);
@@ -115,6 +124,9 @@ public class Conversation {
         go.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, 0.5f));
         go.setBackgroundColor(Color.TRANSPARENT);
         go.setImageResource(R.mipmap.go);
+
+        go.setOnClickListener(new ConversationClick(this.getId(), friend));
+
         l5.addView(go);
 
         return l;

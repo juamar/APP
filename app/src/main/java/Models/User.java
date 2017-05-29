@@ -1,10 +1,12 @@
 package Models;
 
+import java.io.Serializable;
+
 /**
  * Created by JuanIgnacio on 23/05/2017.
  */
 
-public class User{
+public class User implements Serializable {
 
     private int Id;
 

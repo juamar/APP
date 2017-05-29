@@ -110,4 +110,5 @@
     <string name="passwordIncorrect">La clave no es correcta</string>
     <string name="userIncorrect">El usuario no es correcto o no nos hemos podido conectar con internet.</string>
     <string name="loginProblem">Ha ocurrido un problema con el Login. Lo sentimos.</string>
+    <string name="errorRetrievingConversation">Ha habido un error. No podemos mostrar esta conversación.</string>
 </resources>

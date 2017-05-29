@@ -16,20 +16,12 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
-
-import Models.Message;
 import Server.Server;
-import Models.Conversation;
-import Models.User;
-import Models.Message;
 
 public class InicioActivity extends AppCompatActivity {
 
     private TextView tVPerfil;
-    private View IBConversationButton;
     private LinearLayout contenedor1;
 
     @Override
@@ -45,10 +37,6 @@ public class InicioActivity extends AppCompatActivity {
         tVPerfil.setText(content);
         contenedor1 = (LinearLayout) findViewById(R.id.contenedor1);
 
-        //IBConversationButton = findViewById(R.id.IBConversationButton);
-
-        //IBConversationButton.setOnClickListener(new ConversationClick());
-
         new GetConversations().execute(contenedor1.getContext());
     }
 
@@ -57,15 +45,6 @@ public class InicioActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_inicio, menu);
         return true;
-    }
-
-    private class ConversationClick implements View.OnClickListener
-    {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(v.getContext(), ConversationActivity.class);
-            startActivity(intent);
-        }
     }
 
     private class GetConversations extends AsyncTask<Context, Void, ArrayList<View>> {

@@ -1,5 +1,16 @@
 package Models;
 
+import android.content.Context;
+import android.text.TextUtils;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import solutions.lhdev.app.app.R;
+
 /**
  * Created by JuanIgnacio on 26/05/2017.
  */
@@ -101,4 +112,27 @@ public class Message {
 
     public Message() {
     }
+
+    public View buildMessage(Context context, boolean right)
+    {
+        LinearLayout l = new LinearLayout(context);
+        l.setOrientation(LinearLayout.HORIZONTAL);
+        l.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, context.getResources().getDisplayMetrics())));
+        if (!right)
+        {
+            l.setGravity(Gravity.RIGHT);
+        }
+        else
+        {
+            l.setGravity(Gravity.LEFT);
+        }
+
+        TextView message = new TextView(l.getContext());
+        message.setText(this.getMessageText());
+        message.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        l.addView(message);
+
+        return l;
+    }
+
 }

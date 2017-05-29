@@ -24,63 +24,8 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:gravity="right"
-                android:layout_height="30dp">
-
-                <TextView
-                    android:text="Hola"
-                    android:layout_width="wrap_content"
-                    android:id="@+id/textView4"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:gravity="left"
-                android:layout_height="30dp">
-
-                <TextView
-                    android:text="Hola Juan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView5" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:gravity="left"
-                    android:layout_height="30dp">
-
-                <TextView
-                    android:text="Recuerda que mañana hemos de vernos a las 4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView6" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:gravity="left"
-                android:layout_height="30dp">
-
-
-                <TextView
-                    android:text="Si?"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView7" />
-
-            </LinearLayout>
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:id="@+id/messagesContainer" />
     </ScrollView>
 
     <RelativeLayout android:layout_width="match_parent"
