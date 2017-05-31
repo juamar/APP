@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 
+import org.json.JSONObject;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -170,7 +172,7 @@ public class Server {
         ArrayList<View> messages = new ArrayList<View>();
 
         try {
-            final String url = "http://restapp.tecandweb.net/api/Messages?conversationid=" + conversationId;
+            String url = "http://restapp.tecandweb.net/api/Messages?conversationid=" + conversationId;
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             Message[] messagesArray = restTemplate.getForObject(url, Message[].class);
@@ -184,6 +186,11 @@ public class Server {
                 }
                 else
                 {
+                    message.setReaded(true);
+                    url = "http://restapp.tecandweb.net/api/Messages/" + message.getId();
+                    restTemplate = new RestTemplate();
+                    restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                    /**ResponseEntity<Message> sendResponse = **/restTemplate.put(url, message, Message.class);
                     messages.add(message.buildMessage(context, false));
                 }
 
@@ -194,5 +201,19 @@ public class Server {
         }
 
         return messages;
+    }
+
+    public void sendMessage(Message message)
+    {
+        try {
+            final String url = "http://restapp.tecandweb.net/api/Messages";
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+            /**ResponseEntity<Message> sendResponse = **/restTemplate.postForEntity(url, message, Message.class);
+        }
+        catch (Exception e)
+        {
+            Log.e("MainActivity", e.getMessage(), e);
+        }
     }
 }

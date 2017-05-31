@@ -130,6 +130,8 @@ public class Message {
         TextView message = new TextView(l.getContext());
         message.setText(this.getMessageText());
         message.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        message.setFocusable(true);
+        message.setFocusableInTouchMode(true);
         l.addView(message);
 
         return l;
