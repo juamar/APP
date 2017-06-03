@@ -13,7 +13,8 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import Server.Server;
+import server.RegistrationService;
+import server.Server;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -24,6 +25,15 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        /*if (Server.getInstance().getUser() != null)
+        {
+            Intent intent = new Intent(LoginActivity.this, InicioActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }*/
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -97,6 +107,8 @@ public class LoginActivity extends AppCompatActivity {
             Resources res = getResources();
             if (result.equals(0))
             {
+                Intent i = new Intent(getApplicationContext(), RegistrationService.class);
+                startService(i);
                 Intent intent = new Intent(LoginActivity.this, InicioActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

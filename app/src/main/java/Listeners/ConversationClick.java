@@ -1,9 +1,9 @@
-package Listeners;
+package listeners;
 
 import android.content.Intent;
 import android.view.View;
 
-import Models.User;
+import models.User;
 import solutions.lhdev.app.app.ConversationActivity;
 
 /**

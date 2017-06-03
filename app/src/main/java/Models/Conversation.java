@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import Listeners.ConversationClick;
+import listeners.ConversationClick;
 import solutions.lhdev.app.app.R;
 
 /**

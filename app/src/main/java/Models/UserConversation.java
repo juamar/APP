@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 /**
  * Created by JuanIgnacio on 26/05/2017.

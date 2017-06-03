@@ -1,12 +1,8 @@
 package solutions.lhdev.app.app;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
@@ -17,7 +13,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
-import Server.Server;
+import server.Server;
 
 public class InicioActivity extends AppCompatActivity {
 

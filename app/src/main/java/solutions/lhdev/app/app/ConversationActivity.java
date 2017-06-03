@@ -19,10 +19,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import Models.Conversation;
-import Models.Message;
-import Models.User;
-import Server.Server;
+import models.Conversation;
+import models.Message;
+import models.User;
+import server.Server;
 
 public class ConversationActivity extends AppCompatActivity {
 

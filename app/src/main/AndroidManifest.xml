@@ -6,7 +6,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/go"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -20,6 +20,36 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <permission
+            android:name="solutions.lhdev.app.app.permission.C2D_MESSAGE"
+            android:protectionLevel="signature" />
+        <uses-permission
+            android:name="solutions.lhdev.app.app.permission.C2D_MESSAGE" />
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="solutions.lhdev.app.app" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="server.TokenRefreshListener"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="server.NotificationsListener"
+            android:exported="false" >
+            <intent-filter android:priority="10000">
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <service android:name="server.RegistrationService"
+            android:exported="false" />
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register"

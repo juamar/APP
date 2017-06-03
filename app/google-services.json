@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "258942798168",
+    "project_id": "restapp-e4cfc"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258942798168:android:9b8a2ffc9c0a78d6",
+        "android_client_info": {
+          "package_name": "solutions.lhdev.app.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "258942798168-bolqmuuej6o6o8nipqadi85hsibegbpe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUuY4Haqo_GvNE3HL1F0ihyFbmo-GWHeQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

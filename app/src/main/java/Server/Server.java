@@ -1,22 +1,19 @@
-package Server;
+package server;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 
-import org.json.JSONObject;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import Models.Conversation;
-import Models.Message;
-import Models.User;
-import Models.UserConversation;
+import models.Conversation;
+import models.Message;
+import models.User;
+import models.UserConversation;
 
 /**
  * Created by JuanIgnacio on 23/05/2017.
