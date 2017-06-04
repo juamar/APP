@@ -1,9 +1,13 @@
 package solutions.lhdev.app.app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.SyncStateContract.Constants;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
@@ -16,9 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-
 import models.Conversation;
 import models.Message;
 import models.User;
@@ -32,6 +34,8 @@ public class ConversationActivity extends AppCompatActivity {
     private EditText eTMessage;
     private ImageButton IBSend;
     private ScrollView sVConversationActivity;
+    private ImageButton iBAttach;
+    static final int REQUEST_BROWSE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,7 @@ public class ConversationActivity extends AppCompatActivity {
         IBSend = (ImageButton) findViewById(R.id.IBSend);
         sVConversationActivity = (ScrollView) findViewById(R.id.sVConversationActivity);
         sVConversationActivity.fullScroll(View.FOCUS_DOWN);
+        iBAttach = (ImageButton) findViewById(R.id.iBAttachment);
 
         Intent intent = getIntent();
 
@@ -66,6 +71,7 @@ public class ConversationActivity extends AppCompatActivity {
         }
 
         IBSend.setOnClickListener(new SendClick());
+        iBAttach.setOnClickListener(new AttachFile());
 
 
     }
@@ -125,6 +131,43 @@ public class ConversationActivity extends AppCompatActivity {
             eTMessage.setText("");
 
         }
+    }
+
+    private class AttachFile implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v)
+        {
+            selectFile();
+        }
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_BROWSE && resultCode == RESULT_OK && data != null) {
+            Uri uri = data.getData();
+            if (uri != null) {
+                Toast.makeText(ConversationActivity.this, uri.toString(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public void selectFile()
+    {
+        Intent intent = new Intent();
+        intent.setType("*/*");
+        if (Build.VERSION.SDK_INT < 19) {
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent = Intent.createChooser(intent, getResources().getString(R.string.selectFile));
+        } else {
+            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            String[] mimetypes = { "audio/*", "video/*" };
+            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+        }
+        startActivityForResult(intent, REQUEST_BROWSE);
     }
 
 }
