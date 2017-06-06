@@ -113,4 +113,6 @@
     <string name="errorRetrievingConversation">Ha habido un error. No podemos mostrar esta conversación.</string>
     <string name="selectFile">Seleccione Fichero:</string>
     <string name="fileToBig">El fichero no ha de pesar más de 20 MB.</string>
+    <string name="fileAttached">El fichero ya está listo para el envío</string>
+    <string name="fileLocation">El fichero está en</string>
 </resources>

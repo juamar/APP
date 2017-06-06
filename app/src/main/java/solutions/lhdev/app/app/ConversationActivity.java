@@ -152,6 +152,7 @@ public class ConversationActivity extends AppCompatActivity {
                     iStream = getContentResolver().openInputStream(uri);
                     attachmentBynary = getBytes(iStream);
                     attachmentName = file.getName();
+                    Toast.makeText(ConversationActivity.this, getResources().getString(R.string.fileAttached), Toast.LENGTH_LONG).show();
                 }
                 catch (Exception e)
                 {

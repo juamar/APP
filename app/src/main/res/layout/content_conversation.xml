@@ -52,13 +52,13 @@
                 android:layout_weight="0.7" />
 
             <ImageButton
+                android:id="@+id/iBAttachment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/clip"
-                android:scaleType="fitCenter"
-                android:id="@+id/iBAttachment"
                 android:layout_weight="0.15"
-                android:background="@android:color/transparent" />
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/clip" />
 
             <ImageButton
                     android:layout_width="wrap_content"
