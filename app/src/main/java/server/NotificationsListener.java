@@ -22,6 +22,11 @@ public class NotificationsListener extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
 
+        Intent intent = new Intent("unique_name");
+
+        //send broadcast
+        this.getApplicationContext().sendBroadcast(intent);
+
         /*
         This is usefull only if you want the Notification pushed when application is active.
         If application not active, Push will be builded based on the information received over

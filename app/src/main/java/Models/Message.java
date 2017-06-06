@@ -21,7 +21,9 @@ public class Message {
 
     private User user;
 
-    private String attachment;
+    private String attachmentName;
+
+    private byte[] attachmentBynary;
 
     private int conversationId;
 
@@ -61,12 +63,20 @@ public class Message {
         this.user = user;
     }
 
-    public String getAttachment() {
-        return attachment;
+    public String getAttachmentName() {
+        return attachmentName;
     }
 
-    public void setAttachment(String attachment) {
-        this.attachment = attachment;
+    public void setAttachmentName(String attachmentName) {
+        this.attachmentName = attachmentName;
+    }
+
+    public byte[] getAttachmentBynary() {
+        return attachmentBynary;
+    }
+
+    public void setAttachmentBynary(byte[] attachmentBynary) {
+        this.attachmentBynary = attachmentBynary;
     }
 
     public int getConversationId() {

@@ -2,13 +2,11 @@ package server;
 
 import android.app.IntentService;
 import android.content.Intent;
-
+import android.util.Log;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
-
 import java.io.IOException;
-
 import solutions.lhdev.app.app.R;
 
 /**
@@ -29,7 +27,9 @@ public class RegistrationService extends IntentService
         {
             InstanceID myID = InstanceID.getInstance(this);
             String registrationToken = myID.getToken(getString(R.string.gcm_defaultSenderId), GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-            //Log.d("Registration Token", registrationToken);
+            Log.d("Registration Token", registrationToken);
+            Server.getInstance().getUser().setToken(registrationToken);
+            Server.getInstance().updateUser(Server.getInstance().getUser());
             GcmPubSub subscription = GcmPubSub.getInstance(this);
             subscription.subscribe(registrationToken, "/topics/my_little_topic", null);
         }

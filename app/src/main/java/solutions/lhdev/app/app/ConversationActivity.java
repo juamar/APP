@@ -1,8 +1,10 @@
 package solutions.lhdev.app.app;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -20,6 +22,12 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import models.Conversation;
 import models.Message;
@@ -36,6 +44,8 @@ public class ConversationActivity extends AppCompatActivity {
     private ScrollView sVConversationActivity;
     private ImageButton iBAttach;
     static final int REQUEST_BROWSE = 1;
+    private String attachmentName;
+    private byte[] attachmentBynary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,28 +61,6 @@ public class ConversationActivity extends AppCompatActivity {
         sVConversationActivity = (ScrollView) findViewById(R.id.sVConversationActivity);
         sVConversationActivity.fullScroll(View.FOCUS_DOWN);
         iBAttach = (ImageButton) findViewById(R.id.iBAttachment);
-
-        Intent intent = getIntent();
-
-        User friend = (User) intent.getSerializableExtra("friend");
-        SpannableString content = new SpannableString(friend.getName() + " " + friend.getLastName());
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        tVFriend.setText(content);
-
-        conversationId = intent.getIntExtra("conversationId", 0);
-
-        if (conversationId == 0)
-        {
-            Toast.makeText(this, getResources().getString(R.string.errorRetrievingConversation), Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            new GetConversations().execute(messagesContainer.getContext());
-        }
-
-        IBSend.setOnClickListener(new SendClick());
-        iBAttach.setOnClickListener(new AttachFile());
-
 
     }
     private class GetConversations extends AsyncTask<Context, Void, ArrayList<View>> {
@@ -102,7 +90,16 @@ public class ConversationActivity extends AppCompatActivity {
         public void onClick(View v)
         {
             if (eTMessage.getText().toString().trim().length() > 0) {
-                new SendMessage().execute(new Message(1, eTMessage.getText().toString().trim() , Server.getInstance().getUser(), new Conversation(conversationId), false, conversationId, Server.getInstance().getUser().getId()));
+                Message message = new Message(1, eTMessage.getText().toString().trim() , Server.getInstance().getUser(), new Conversation(conversationId), false, conversationId, Server.getInstance().getUser().getId());
+                if (attachmentName != null)
+                {
+                    message.setAttachmentName(attachmentName);
+                    message.setAttachmentBynary(attachmentBynary);
+                }
+                new SendMessage().execute(message);
+                eTMessage.setText("");
+                attachmentName = null;
+                attachmentBynary = new byte[1024];
             }
         }
     }
@@ -128,8 +125,6 @@ public class ConversationActivity extends AppCompatActivity {
             View messageView = message.buildMessage(messagesContainer.getContext(),true);
             messagesContainer.addView(messageView);
             messageView.requestFocus();
-            eTMessage.setText("");
-
         }
     }
 
@@ -148,10 +143,38 @@ public class ConversationActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_BROWSE && resultCode == RESULT_OK && data != null) {
             Uri uri = data.getData();
-            if (uri != null) {
-                Toast.makeText(ConversationActivity.this, uri.toString(), Toast.LENGTH_LONG).show();
+            if (uri != null)
+            {
+                File file= new File(uri.getPath());
+                InputStream iStream = null;
+                try
+                {
+                    iStream = getContentResolver().openInputStream(uri);
+                    attachmentBynary = getBytes(iStream);
+                    attachmentName = file.getName();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                catch (java.lang.OutOfMemoryError e)
+                {
+                    Toast.makeText(ConversationActivity.this, getResources().getString(R.string.fileToBig), Toast.LENGTH_LONG).show();
+                }
             }
         }
+    }
+
+    private byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 20000000;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
     }
 
     public void selectFile()
@@ -168,6 +191,56 @@ public class ConversationActivity extends AppCompatActivity {
             intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
         }
         startActivityForResult(intent, REQUEST_BROWSE);
+    }
+
+    //register your activity onResume()
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.registerReceiver(mMessageReceiver, new IntentFilter("unique_name"));
+    }
+
+    //Must unregister onPause()
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.unregisterReceiver(mMessageReceiver);
+    }
+
+
+    //This is the handler that will manager to process the broadcast intent
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            messagesContainer.removeAllViews();
+            new GetConversations().execute(messagesContainer.getContext());
+        }
+    };
+
+    protected void onStart()
+    {
+        super.onStart();
+
+        Intent intent = getIntent();
+
+        User friend = (User) intent.getSerializableExtra("friend");
+        SpannableString content = new SpannableString(friend.getName() + " " + friend.getLastName());
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        tVFriend.setText(content);
+
+        conversationId = intent.getIntExtra("conversationId", 0);
+
+        if (conversationId == 0)
+        {
+            Toast.makeText(this, getResources().getString(R.string.errorRetrievingConversation), Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            new GetConversations().execute(messagesContainer.getContext());
+        }
+
+        IBSend.setOnClickListener(new SendClick());
+        iBAttach.setOnClickListener(new AttachFile());
     }
 
 }

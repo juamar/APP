@@ -112,4 +112,5 @@
     <string name="loginProblem">Ha ocurrido un problema con el Login. Lo sentimos.</string>
     <string name="errorRetrievingConversation">Ha habido un error. No podemos mostrar esta conversación.</string>
     <string name="selectFile">Seleccione Fichero:</string>
+    <string name="fileToBig">El fichero no ha de pesar más de 20 MB.</string>
 </resources>

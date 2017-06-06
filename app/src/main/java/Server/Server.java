@@ -213,4 +213,19 @@ public class Server {
             Log.e("MainActivity", e.getMessage(), e);
         }
     }
+
+    public void updateUser(User user)
+    {
+        this.user = user;
+        try {
+            final String url = "http://restapp.tecandweb.net/api/users/" + this.user.getId();
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+            /**ResponseEntity<Message> sendResponse = **/restTemplate.put(url, user, User.class);
+        }
+        catch (Exception e)
+        {
+            Log.e("MainActivity", e.getMessage(), e);
+        }
+    }
 }
