@@ -1,5 +1,6 @@
 package listeners;
 
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +28,7 @@ public class SaveAttachment implements View.OnClickListener {
     @Override
     public void onClick(View v)
     {
+        //This code is usefull for Android prior to 6.0
         File file=new File(Environment.getExternalStorageDirectory(), message.getAttachmentName());
 
         if (file.exists()) {

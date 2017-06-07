@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -216,16 +217,31 @@ public class Server {
 
     public void updateUser(User user)
     {
-        this.user = user;
         try {
             final String url = "http://restapp.tecandweb.net/api/users/" + this.user.getId();
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-            /**ResponseEntity<Message> sendResponse = **/restTemplate.put(url, user, User.class);
+            restTemplate.put(url, user, User.class);
         }
         catch (Exception e)
         {
             Log.e("MainActivity", e.getMessage(), e);
+        }
+    }
+
+    public Integer register(User user) {
+        try {
+            final String url = "http://restapp.tecandweb.net/api/users";
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+            /**ResponseEntity<Message> sendResponse = **/restTemplate.postForEntity(url, user, User.class);
+            this.Login(user.getEmail(), user.getPassword());
+            return 0;
+        }
+        catch (Exception e)
+        {
+            Log.e("MainActivity", e.getMessage(), e);
+            return 1;
         }
     }
 }

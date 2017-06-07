@@ -66,9 +66,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.registro) {
-            Toast.makeText(LoginActivity.this, "Le has dado a registro...", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, RegisterActivity.class);
-            intent.putExtra("message", "tonto");
             startActivity(intent);
         }
 
@@ -79,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
     {
         @Override
         public void onClick(View v) {
+            Toast.makeText(LoginActivity.this, getResources().getString(R.string.loading), Toast.LENGTH_SHORT).show();
             new LoginTask().execute(eTuser.getText().toString().trim(),eTpass.getText().toString().trim());
         }
     }

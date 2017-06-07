@@ -115,4 +115,8 @@
     <string name="fileToBig">El fichero no ha de pesar más de 20 MB.</string>
     <string name="fileAttached">El fichero ya está listo para el envío</string>
     <string name="fileLocation">El fichero está en</string>
+    <string name="loading">Cargando...</string>
+    <string name="passwordMatchingIncorrect">Las claves no coinciden. Por favor revise las claves.</string>
+    <string name="passwordTooShort">La clave ha de tener más de 3 caracteres.</string>
+    <string name="registerProblem">Ha ocurrido un problema al enviár el registro. Lo sentimos.</string>
 </resources>

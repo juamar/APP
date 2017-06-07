@@ -30,8 +30,6 @@ public class RegistrationService extends IntentService
             Log.d("Registration Token", registrationToken);
             Server.getInstance().getUser().setToken(registrationToken);
             Server.getInstance().updateUser(Server.getInstance().getUser());
-            GcmPubSub subscription = GcmPubSub.getInstance(this);
-            subscription.subscribe(registrationToken, "/topics/my_little_topic", null);
         }
         catch (IOException e)
         {
