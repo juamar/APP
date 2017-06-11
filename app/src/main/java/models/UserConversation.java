@@ -54,4 +54,12 @@ public class UserConversation {
     public void setConversation(Conversation conversation) {
         this.conversation = conversation;
     }
+
+    public UserConversation(int conversationId, int userId) {
+        this.conversationId = conversationId;
+        this.userId = userId;
+    }
+
+    public UserConversation() {
+    }
 }

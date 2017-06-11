@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import models.Conversation;
+import models.Friendship;
 import models.Message;
 import models.User;
 import models.UserConversation;
@@ -25,8 +26,15 @@ public class Server {
     private User user;
     private static Server server;
     private boolean finished = false;
+    private Message messageAttachment;
 
+    public Message getMessageAttachment() {
+        return messageAttachment;
+    }
 
+    public void setMessageAttachment(Message messageAttachment) {
+        this.messageAttachment = messageAttachment;
+    }
 
     public User getUser() {
         return user;
@@ -56,7 +64,7 @@ public class Server {
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             this.user = restTemplate.getForObject(url, User.class);
         } catch (Exception e) {
-            Log.e("MainActivity", e.getMessage(), e);
+            Log.e("Server", e.getMessage(), e);
             return 1; //user is not correct or we cannot connect to internet.
         }
 
@@ -78,7 +86,7 @@ public class Server {
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             userConversationsArray = restTemplate.getForObject(url, UserConversation[].class);
         } catch (Exception e) {
-            Log.e("InicioActivity", e.getMessage(), e);
+            Log.e("Server", e.getMessage(), e);
             return null;
         }
 
@@ -100,12 +108,9 @@ public class Server {
             User user;
             int friendId = 0;
 
-            try {
-                final String url = "http://restapp.tecandweb.net/api/UserConversations?conversationId=" + userConversation.getConversationId();
-                RestTemplate restTemplate = new RestTemplate();
-                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                UserConversation[] uc = restTemplate.getForObject(url, UserConversation[].class);
-                for ( UserConversation userconversation2 : uc)
+            try
+            {
+                for ( UserConversation userconversation2 : getUserConversationsByConversationID(userConversation.getConversationId()))
                 {
                     if (userconversation2.getUserId() != this.user.getId())
                     {
@@ -113,7 +118,7 @@ public class Server {
                     }
                 }
             } catch (Exception e) {
-                Log.e("InicioActivity", e.getMessage(), e);
+                Log.e("Server", e.getMessage(), e);
                 return null;
             }
 
@@ -123,7 +128,7 @@ public class Server {
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 user = restTemplate.getForObject(url, User.class);
             } catch (Exception e) {
-                Log.e("MainActivity", e.getMessage(), e);
+                Log.e("Server", e.getMessage(), e);
                 return null;
             }
 
@@ -132,7 +137,8 @@ public class Server {
             /**Get Messages**/
 
             int messagesNotReaded=0;
-            Message lastMessage;
+            Message lastMessage = new Message();
+            int messagesNumber = 0;
 
             try {
                 final String url = "http://restapp.tecandweb.net/api/Messages?conversationid=" + userConversation.getConversationId();
@@ -140,29 +146,30 @@ public class Server {
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 Message[] messagesArray = restTemplate.getForObject(url, Message[].class);
 
-                lastMessage = messagesArray[messagesArray.length - 1];
-                for (Message message : messagesArray)
+                messagesNumber = messagesArray.length;
+
+                if (messagesNumber > 0)
                 {
-                    if (!message.isReaded() && message.getUserId() != this.user.getId())
-                    {
-                        messagesNotReaded++;
+                    lastMessage = messagesArray[messagesArray.length - 1];
+                    for (Message message : messagesArray) {
+                        if (!message.isReaded() && message.getUserId() != this.user.getId()) {
+                            messagesNotReaded++;
+                        }
                     }
                 }
             } catch (Exception e) {
-                Log.e("MainActivity", e.getMessage(), e);
+                Log.e("Server", e.getMessage(), e);
                 return null;
             }
-
             /**Messages Gotten**/
-
-            views.add(new Conversation(userConversation.getConversationId()).buildConversation(user,  lastMessage, messagesNotReaded, context));
+            if (messagesNumber > 0)
+            {
+                views.add(new Conversation(userConversation.getConversationId()).buildConversation(user, lastMessage, messagesNotReaded, context));
+            }
         }
 
         return views;
 
-        //Trae Conversaciones
-        //Trae el amigo asociado a la conversacion
-        //Contruye vista de conversacion
     }
 
     public ArrayList<View> getMessages(Context context, int conversationId) {
@@ -194,7 +201,7 @@ public class Server {
 
             }
         } catch (Exception e) {
-            Log.e("MainActivity", e.getMessage(), e);
+            Log.e("Server", e.getMessage(), e);
             return null;
         }
 
@@ -211,7 +218,7 @@ public class Server {
         }
         catch (Exception e)
         {
-            Log.e("MainActivity", e.getMessage(), e);
+            Log.e("Server", e.getMessage(), e);
         }
     }
 
@@ -225,7 +232,7 @@ public class Server {
         }
         catch (Exception e)
         {
-            Log.e("MainActivity", e.getMessage(), e);
+            Log.e("Server", e.getMessage(), e);
         }
     }
 
@@ -240,8 +247,94 @@ public class Server {
         }
         catch (Exception e)
         {
-            Log.e("MainActivity", e.getMessage(), e);
+            Log.e("Server", e.getMessage(), e);
             return 1;
         }
+    }
+
+    public ArrayList<View> getFriends(Context context) {
+        ArrayList<View> friends = new ArrayList<>();
+
+        try {
+            final String url = "http://restapp.tecandweb.net/api/users";
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+            User[] u = restTemplate.getForObject(url, User[].class);
+            for ( User user : u)
+            {
+                if (user.getId() != this.user.getId())
+                {
+                    friends.add(new Friendship().buildConversation(user, context));
+                }
+            }
+        } catch (Exception e) {
+            Log.e("Server", e.getMessage(), e);
+        }
+        return friends;
+    }
+
+    public Integer addConversation(User friend) {
+
+        UserConversation[] myUserConversations;
+
+        try {
+            final String url = "http://restapp.tecandweb.net/api/UserConversations?userid=" + this.user.getId();
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+            myUserConversations = restTemplate.getForObject(url, UserConversation[].class);
+        } catch (Exception e) {
+            Log.e("Server", e.getMessage(), e);
+            return null;
+        }
+
+        for (UserConversation ucs : myUserConversations)
+        {
+            try {
+                for (UserConversation uc : getUserConversationsByConversationID(ucs.getConversationId()))
+                {
+                    if (uc.getUserId() == friend.getId())
+                    {
+                        return uc.getConversationId();
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("Server", e.getMessage(), e);
+                return null;
+            }
+
+        }
+        try {
+            String url = "http://restapp.tecandweb.net/api/Conversations";
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+            ResponseEntity<Conversation> conversation = restTemplate.postForEntity(url, new Conversation(), Conversation.class);
+
+            url = "http://restapp.tecandweb.net/api/UserConversations";
+            restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+            /**ResponseEntity<Message> sendResponse = **/restTemplate.postForEntity(url, new UserConversation(conversation.getBody().getId(),friend.getId()), UserConversation.class);
+
+            url = "http://restapp.tecandweb.net/api/UserConversations";
+            restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+            /**ResponseEntity<Message> sendResponse = **/restTemplate.postForEntity(url, new UserConversation(conversation.getBody().getId(),this.user.getId()), UserConversation.class);
+
+            return conversation.getBody().getId();
+        }
+        catch (Exception e)
+        {
+            Log.e("Server", e.getMessage(), e);
+        }
+
+        return null;
+
+    }
+
+    private UserConversation[] getUserConversationsByConversationID(int conversationId) throws Exception
+    {
+        final String url = "http://restapp.tecandweb.net/api/UserConversations?conversationId=" + conversationId;
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        return restTemplate.getForObject(url, UserConversation[].class);
     }
 }

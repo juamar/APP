@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.Serializable;
+
 import listeners.SaveAttachment;
 import solutions.lhdev.app.app.R;
 
@@ -18,7 +21,7 @@ import solutions.lhdev.app.app.R;
  * Created by JuanIgnacio on 26/05/2017.
  */
 
-public class Message {
+public class Message implements Serializable{
     private int id;
 
     private String messageText;
@@ -166,7 +169,11 @@ public class Message {
             attachment.setScaleType(ImageView.ScaleType.FIT_START);
             l.addView(attachment);
 
-            attachment.setOnClickListener(new SaveAttachment(this));
+            try {
+                attachment.setOnClickListener(new SaveAttachment(this));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         l.addView(message);
