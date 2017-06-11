@@ -3,11 +3,13 @@ package server;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -208,18 +210,36 @@ public class Server {
         return messages;
     }
 
-    public void sendMessage(Message message)
+    public int sendMessage(Message message)
     {
+        int retry = 0;
         try {
             final String url = "http://restapp.tecandweb.net/api/Messages";
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             /**ResponseEntity<Message> sendResponse = **/restTemplate.postForEntity(url, message, Message.class);
         }
+        catch (org.springframework.web.client.ResourceAccessException e)
+        {
+            retry++;
+            if (retry < 2)
+            {
+                final String url = "http://restapp.tecandweb.net/api/Messages";
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                /**ResponseEntity<Message> sendResponse = **/restTemplate.postForEntity(url, message, Message.class);
+            }
+            else
+            {
+                return 1;
+            }
+        }
         catch (Exception e)
         {
             Log.e("Server", e.getMessage(), e);
+            return 2;
         }
+        return 0;
     }
 
     public void updateUser(User user)

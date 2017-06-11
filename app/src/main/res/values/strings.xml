@@ -121,4 +121,7 @@
     <string name="registerProblem">Ha ocurrido un problema al enviár el registro. Lo sentimos.</string>
     <string name="title_activity_new_conversation">NewConversationActivity</string>
     <string name="write_pemission_denied">Has de autorizar a APB para poder guardar el fichero.</string>
+    <string name="resend_please">Hemos intentado reenviarlo, pero no ha funcionado. Reenvie
+        manualmente el mensaje por favor.</string>
+    <string name="send_message_error">Ha ocurrido un error generico y no hemos podido reenviar el mensaje.</string>
 </resources>

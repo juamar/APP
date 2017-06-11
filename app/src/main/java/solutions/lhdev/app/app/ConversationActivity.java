@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -110,15 +111,15 @@ public class ConversationActivity extends AppCompatActivity {
         }
     }
 
-    private class SendMessage extends AsyncTask<Message, Void, Void> {
+    private class SendMessage extends AsyncTask<Message, Void, Integer> {
 
         Message message;
 
         @Override
-        protected Void doInBackground(Message... messages) {
+        protected Integer doInBackground(Message... messages) {
             try {
                 message = messages[0];
-                Server.getInstance().sendMessage(message);
+                return Server.getInstance().sendMessage(message);
             } catch (Exception e) {
                 Log.e("ConversationActivity", e.getMessage(), e);
             }
@@ -126,10 +127,21 @@ public class ConversationActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Void v) {
-            View messageView = message.buildMessage(messagesContainer.getContext(), true);
-            messagesContainer.addView(messageView);
-            messageView.requestFocus();
+        protected void onPostExecute(Integer result) {
+            if (result.equals(0))
+            {
+                View messageView = message.buildMessage(messagesContainer.getContext(), true);
+                messagesContainer.addView(messageView);
+                messageView.requestFocus();
+            }
+            if (result.equals(1))
+            {
+                Toast.makeText(ConversationActivity.this, getString(R.string.resend_please),Toast.LENGTH_LONG).show();
+            }
+            if (result.equals(2))
+            {
+                Toast.makeText(ConversationActivity.this, getString(R.string.send_message_error),Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -152,22 +164,9 @@ public class ConversationActivity extends AppCompatActivity {
                 try {
                     iStream = getContentResolver().openInputStream(uri);
                     attachmentBynary = getBytes(iStream);
+                    attachmentName = getFileName(uri);
 
-                    String[] projection = {MediaStore.MediaColumns.DATA};
-
-                    ContentResolver cr = getApplicationContext().getContentResolver();
-                    Cursor metaCursor = cr.query(uri, projection, null, null, null);
-                    if (metaCursor != null) {
-                        try {
-                            if (metaCursor.moveToFirst()) {
-                                attachmentName = metaCursor.getString(0).substring(metaCursor.getString(0).lastIndexOf("/")+1);
-                            }
-                        } finally {
-                            metaCursor.close();
-                        }
-                    }
-
-                    Toast.makeText(ConversationActivity.this, getResources().getString(R.string.fileAttached), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ConversationActivity.this, attachmentName + ": " + getResources().getString(R.string.fileAttached), Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 } catch (OutOfMemoryError e) {
@@ -297,6 +296,28 @@ public class ConversationActivity extends AppCompatActivity {
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
     }
 
 }
