@@ -221,18 +221,8 @@ public class Server {
         }
         catch (org.springframework.web.client.ResourceAccessException e)
         {
-            retry++;
-            if (retry < 2)
-            {
-                final String url = "http://restapp.tecandweb.net/api/Messages";
-                RestTemplate restTemplate = new RestTemplate();
-                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                /**ResponseEntity<Message> sendResponse = **/restTemplate.postForEntity(url, message, Message.class);
-            }
-            else
-            {
-                return 1;
-            }
+            Log.e("Server", e.getMessage(), e);
+            return 1;
         }
         catch (Exception e)
         {

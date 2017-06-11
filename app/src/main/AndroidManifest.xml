@@ -4,6 +4,11 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <permission
+        android:name="solutions.lhdev.app.app.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission
+        android:name="solutions.lhdev.app.app.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -21,11 +26,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <permission
-            android:name="solutions.lhdev.app.app.permission.C2D_MESSAGE"
-            android:protectionLevel="signature" />
-        <uses-permission
-            android:name="solutions.lhdev.app.app.permission.C2D_MESSAGE" />
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
