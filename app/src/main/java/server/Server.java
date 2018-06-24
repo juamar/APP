@@ -29,6 +29,7 @@ public class Server {
     private static Server server;
     private boolean finished = false;
     private Message messageAttachment;
+    private final String URL = "http://restapp.lhdevsolutions.net";
 
     public Message getMessageAttachment() {
         return messageAttachment;
@@ -61,7 +62,7 @@ public class Server {
     public int Login(String email, String pass)
     {
         try {
-            final String url = "http://restapp.tecandweb.net/api/users?email=" + email;
+            final String url = URL + "/api/users?email=" + email;
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             this.user = restTemplate.getForObject(url, User.class);
@@ -83,7 +84,7 @@ public class Server {
         UserConversation[] userConversationsArray;
 
         try {
-            final String url = "http://restapp.tecandweb.net/api/UserConversations?userid=" + user.getId();
+            final String url = URL + "/api/UserConversations?userid=" + user.getId();
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             userConversationsArray = restTemplate.getForObject(url, UserConversation[].class);
@@ -125,7 +126,7 @@ public class Server {
             }
 
             try {
-                final String url = "http://restapp.tecandweb.net/api/users/" + friendId;
+                final String url = URL + "/api/users/" + friendId;
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 user = restTemplate.getForObject(url, User.class);
@@ -143,7 +144,7 @@ public class Server {
             int messagesNumber = 0;
 
             try {
-                final String url = "http://restapp.tecandweb.net/api/Messages?conversationid=" + userConversation.getConversationId();
+                final String url = URL + "/api/Messages?conversationid=" + userConversation.getConversationId();
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 Message[] messagesArray = restTemplate.getForObject(url, Message[].class);
@@ -179,7 +180,7 @@ public class Server {
         ArrayList<View> messages = new ArrayList<View>();
 
         try {
-            String url = "http://restapp.tecandweb.net/api/Messages?conversationid=" + conversationId;
+            String url = URL + "/api/Messages?conversationid=" + conversationId;
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             Message[] messagesArray = restTemplate.getForObject(url, Message[].class);
@@ -194,7 +195,7 @@ public class Server {
                 else
                 {
                     message.setReaded(true);
-                    url = "http://restapp.tecandweb.net/api/Messages/" + message.getId();
+                    url = URL + "/api/Messages/" + message.getId();
                     restTemplate = new RestTemplate();
                     restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                     /**ResponseEntity<Message> sendResponse = **/restTemplate.put(url, message, Message.class);
@@ -214,7 +215,7 @@ public class Server {
     {
         int retry = 0;
         try {
-            final String url = "http://restapp.tecandweb.net/api/Messages";
+            final String url = URL + "/api/Messages";
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             /**ResponseEntity<Message> sendResponse = **/restTemplate.postForEntity(url, message, Message.class);
@@ -235,7 +236,7 @@ public class Server {
     public void updateUser(User user)
     {
         try {
-            final String url = "http://restapp.tecandweb.net/api/users/" + this.user.getId();
+            final String url = URL + "/api/users/" + this.user.getId();
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             restTemplate.put(url, user, User.class);
@@ -248,7 +249,7 @@ public class Server {
 
     public Integer register(User user) {
         try {
-            final String url = "http://restapp.tecandweb.net/api/users";
+            final String url = URL + "/api/users";
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             /**ResponseEntity<Message> sendResponse = **/restTemplate.postForEntity(url, user, User.class);
@@ -266,7 +267,7 @@ public class Server {
         ArrayList<View> friends = new ArrayList<>();
 
         try {
-            final String url = "http://restapp.tecandweb.net/api/users";
+            final String url = URL + "/api/users";
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             User[] u = restTemplate.getForObject(url, User[].class);
@@ -288,7 +289,7 @@ public class Server {
         UserConversation[] myUserConversations;
 
         try {
-            final String url = "http://restapp.tecandweb.net/api/UserConversations?userid=" + this.user.getId();
+            final String url = URL + "/api/UserConversations?userid=" + this.user.getId();
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             myUserConversations = restTemplate.getForObject(url, UserConversation[].class);
@@ -314,17 +315,17 @@ public class Server {
 
         }
         try {
-            String url = "http://restapp.tecandweb.net/api/Conversations";
+            String url = URL + "/api/Conversations";
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             ResponseEntity<Conversation> conversation = restTemplate.postForEntity(url, new Conversation(), Conversation.class);
 
-            url = "http://restapp.tecandweb.net/api/UserConversations";
+            url = URL + "/api/UserConversations";
             restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             /**ResponseEntity<Message> sendResponse = **/restTemplate.postForEntity(url, new UserConversation(conversation.getBody().getId(),friend.getId()), UserConversation.class);
 
-            url = "http://restapp.tecandweb.net/api/UserConversations";
+            url = URL + "/api/UserConversations";
             restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             /**ResponseEntity<Message> sendResponse = **/restTemplate.postForEntity(url, new UserConversation(conversation.getBody().getId(),this.user.getId()), UserConversation.class);
@@ -342,7 +343,7 @@ public class Server {
 
     private UserConversation[] getUserConversationsByConversationID(int conversationId) throws Exception
     {
-        final String url = "http://restapp.tecandweb.net/api/UserConversations?conversationId=" + conversationId;
+        final String url = URL + "/api/UserConversations?conversationId=" + conversationId;
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         return restTemplate.getForObject(url, UserConversation[].class);
